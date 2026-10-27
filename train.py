@@ -4,12 +4,23 @@ from torch import nn
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
 from torchvision.datasets import ImageFolder
+import wandb
 
 from utils.loops import train_loop, test_loop
 from utils.dataset import train_path, test_path, transform
 
 def main():
     device = "cuda" if torch.cuda.is_available() else "cpu"
+    
+    wandb.init(
+        project="tiny-imagenet",
+        config={
+            "learning_rate": 1e-4,
+            "epochs": 10,
+            "batch_size": 64,
+            "optimizer": "SGD",
+        }
+    )
     
     tiny_imagenet_dataset_train = ImageFolder(root=train_path, transform=transform["train"])
     tiny_imagenet_dataset_test = ImageFolder(root=test_path, transform=transform["val"])
@@ -32,6 +43,9 @@ def main():
     
     
     torch.save(model.state_dict(), "checkpoints/TinyImgNetClassifier_weights.pth")
+    wandb.save("checkpoints/TinyImgNetClassifier_weights.pth")
+    
+    wandb.finish()
     
     
 if __name__ == "__main__":

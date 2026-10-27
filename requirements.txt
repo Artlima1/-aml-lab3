@@ -4,3 +4,4 @@ torchvision
 requests
 ZipFile
 BytesIO
+wandb
