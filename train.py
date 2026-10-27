@@ -6,12 +6,10 @@ from torch.utils.data import DataLoader
 from torchvision.datasets import ImageFolder
 
 from utils.loops import train_loop, test_loop
-from utils.dataset import download_dataset, transform
+from utils.dataset import train_path, test_path, transform
 
 def main():
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    
-    train_path, test_path = download_dataset()
     
     tiny_imagenet_dataset_train = ImageFolder(root=train_path, transform=transform["train"])
     tiny_imagenet_dataset_test = ImageFolder(root=test_path, transform=transform["val"])
@@ -29,7 +27,7 @@ def main():
     epochs = 10
     for t in range(epochs):
         print(f"Epoch {t+1}\n------------------------------------------")
-        train_loop()
+        train_loop(dataloader_train, model, loss_fn, optim)
     
     
     torch.save(model.state_dict(), "checkpoints/TinyImgNetClassifier_weights.pth")

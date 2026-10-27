@@ -3,14 +3,13 @@ from torch.utils.data import DataLoader
 from torchvision.datasets import ImageFolder
 
 from models.TinyImgNetClassifier import TinyImgNetClassifier
-from utils.dataset import download_dataset, transform
+from utils.dataset import test_path, transform
 from utils.loops import test_loop
 
 
 def main():
     device = "cuda" if torch.cuda.is_available() else "cpu"
     
-    _, test_path = download_dataset()
     tiny_imagenet_dataset_test = ImageFolder(root=test_path, transform=transform["val"])
     dataloader_test = DataLoader(dataset=tiny_imagenet_dataset_test, batch_size=64, shuffle=True)
     

@@ -6,23 +6,21 @@ import torchvision.transforms as transforms
 
 dataset_downloaded_flag = False
 
+train_path, test_path = (
+    '/dataset/tiny-imagenet-200/train',
+    '/dataset/tiny-imagenet-200/test'
+)
+
 def download_dataset():
-    if not dataset_downloaded_flag:
-        dataset_path = 'http://cs231n.stanford.edu/tiny-imagenet-200.zip'
-        response = requests.get(dataset_path)
-        # Check if the request was successful
-        if response.status_code == 200:
-            # Open the downloaded bytes and extract them
-            with ZipFile(BytesIO(response.content)) as zip_file:
-                zip_file.extractall('/dataset')
-            print('Download and extraction complete!')
-            
-        dataset_downloaded_flag = True
+    dataset_path = 'http://cs231n.stanford.edu/tiny-imagenet-200.zip'
+    response = requests.get(dataset_path)
+    # Check if the request was successful
+    if response.status_code == 200:
+        # Open the downloaded bytes and extract them
+        with ZipFile(BytesIO(response.content)) as zip_file:
+            zip_file.extractall('/dataset')
+        print('Download and extraction complete!')
         
-    return (
-        '/dataset/tiny-imagenet-200/train'
-        '/dataset/tiny-imagenet-200/test'
-    )
     
 transform = {
     'train': transforms.Compose([
