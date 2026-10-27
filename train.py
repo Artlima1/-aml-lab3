@@ -12,26 +12,29 @@ from utils.dataset import train_path, test_path, transform
 def main():
     device = "cuda" if torch.cuda.is_available() else "cpu"
     
+    learning_rate = 0.01
+    epochs = 10
+    batch_size = 256
+    
     wandb.init(
         project="tiny-imagenet",
         config={
-            "learning_rate": 1e-4,
-            "epochs": 10,
-            "batch_size": 64,
+            "learning_rate": learning_rate,
+            "epochs": epochs,
+            "batch_size": batch_size,
             "optimizer": "SGD",
         }
     )
     
     tiny_imagenet_dataset_train = ImageFolder(root=train_path, transform=transform["train"])
     tiny_imagenet_dataset_test = ImageFolder(root=test_path, transform=transform["val"])
-    dataloader_train = DataLoader(dataset=tiny_imagenet_dataset_train, batch_size=64, shuffle=True)
-    dataloader_test = DataLoader(dataset=tiny_imagenet_dataset_test, batch_size=64, shuffle=True)
+    dataloader_train = DataLoader(dataset=tiny_imagenet_dataset_train, batch_size=batch_size, shuffle=True)
+    dataloader_test = DataLoader(dataset=tiny_imagenet_dataset_test, batch_size=batch_size, shuffle=True)
 
     # Create the model
     model = TinyImgNetClassifier().to(device)
     print(model)
     
-    learning_rate = 1e-4
     loss_fn = nn.CrossEntropyLoss()
     optim = torch.optim.SGD(model.parameters(), lr = learning_rate)
     
