@@ -2,17 +2,17 @@ import torch
 from torch import nn
 
 
-class TinyImgNetClassifier(nn.module):
+class TinyImgNetClassifier(nn.Module):
     def __init__(self):
         super(TinyImgNetClassifier, self).__init__()
         self.flatten = nn.Flatten()
         self.linear_relu_stack = nn.Sequential(
             nn.Linear(224*224, 512),
-            nn.ReLu(),
+            nn.ReLU(),
             nn.Linear(512, 512),
-            nn.ReLu(),
+            nn.ReLU(),
             nn.Linear(512, 200),
-            nn.ReLu(),
+            nn.ReLU(),
         )
         
     def forward(self, x):
