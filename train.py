@@ -27,7 +27,8 @@ def main():
     epochs = 10
     for t in range(epochs):
         print(f"Epoch {t+1}\n------------------------------------------")
-        train_loop(dataloader_train, model, loss_fn, optim)
+        train_loop(dataloader_train, model, loss_fn, optim, device)
+        test_loop(dataloader_test, model, loss_fn, device)
     
     
     torch.save(model.state_dict(), "checkpoints/TinyImgNetClassifier_weights.pth")
