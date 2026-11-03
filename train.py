@@ -12,7 +12,7 @@ from utils.dataset import train_path, val_path, transform, prepare_val_folder
 def main():
     device = "cuda" if torch.cuda.is_available() else "cpu"
     
-    learning_rates = [0.1, 0.001, 0.0001]
+    learning_rates = [0.001, 0.0001]
     batch_sizes = [64, 128, 256]
     num_epochs = 5
     

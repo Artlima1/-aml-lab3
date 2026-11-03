@@ -9,9 +9,9 @@ import torchvision.transforms as transforms
 dataset_downloaded_flag = False
 
 train_path, val_path, test_path = (
-    '/dataset/tiny-imagenet-200/train',
-    '/dataset/tiny-imagenet-200/val',
-    '/dataset/tiny-imagenet-200/test',
+    './dataset/tiny-imagenet-200/train',
+    './dataset/tiny-imagenet-200/val',
+    './dataset/tiny-imagenet-200/test',
 )
 
 def download_dataset():
@@ -21,7 +21,7 @@ def download_dataset():
     if response.status_code == 200:
         # Open the downloaded bytes and extract them
         with ZipFile(BytesIO(response.content)) as zip_file:
-            zip_file.extractall('/dataset')
+            zip_file.extractall('./dataset')
         print('Download and extraction complete!')
 
 
