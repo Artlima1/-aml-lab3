@@ -44,10 +44,11 @@ class TinyImgNetResNet(nn.Module):
             
             nn.MaxPool2d(3, 1),
             nn.Flatten(),
-            nn.Linear(7168, 1000)
         )
+        self.classification_head = nn.Linear(7168, 200)
         
         
     def forward(self, x):
-        logits = self.ResNet(x)
+        x = self.ResNet(x)
+        logits = self.classification_head(x)
         return logits

@@ -10,7 +10,7 @@ from utils.loops import test_loop
 def main():
     device = "cuda" if torch.cuda.is_available() else "cpu"
     
-    tiny_imagenet_dataset_val = ImageFolder(root=val_path, transform=transform["val"])
+    tiny_imagenet_dataset_val = ImageFolder(root=val_path, transform=transform)
     dataloader_test = DataLoader(dataset=tiny_imagenet_dataset_val, batch_size=64, shuffle=True)
     
     model = TinyImgNetAlexNet().to(device)

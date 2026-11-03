@@ -12,9 +12,9 @@ from utils.dataset import train_path, val_path, transform
 def main():
     device = "cuda" if torch.cuda.is_available() else "cpu"
     
-    learning_rate = 0.01
+    learning_rate = 0.1
     epochs = 10
-    batch_size = 256
+    batch_size = 16
     
     wandb.init(
         project="tiny-imagenet",
@@ -26,8 +26,8 @@ def main():
         }
     )
     
-    tiny_imagenet_dataset_train = ImageFolder(root=train_path, transform=transform["train"])
-    tiny_imagenet_dataset_val = ImageFolder(root=val_path, transform=transform["val"])
+    tiny_imagenet_dataset_train = ImageFolder(root=train_path, transform=transform)
+    tiny_imagenet_dataset_val = ImageFolder(root=val_path, transform=transform)
     dataloader_train = DataLoader(dataset=tiny_imagenet_dataset_train, batch_size=batch_size, shuffle=True)
     dataloader_val = DataLoader(dataset=tiny_imagenet_dataset_val, batch_size=batch_size, shuffle=True)
 
@@ -38,7 +38,6 @@ def main():
     loss_fn = nn.CrossEntropyLoss()
     optim = torch.optim.SGD(model.parameters(), lr = learning_rate, momentum=0.9, weight_decay=5e-4)
     
-    epochs = 10
     for t in range(epochs):
         print(f"Epoch {t+1}\n------------------------------------------")
         train_loop(dataloader_train, model, loss_fn, optim, device)

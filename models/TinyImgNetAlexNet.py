@@ -17,7 +17,9 @@ class TinyImgNetAlexNet(nn.Module):
             nn.MaxPool2d(3, 2),             # pool5
             nn.Flatten()
         )
+        self.classification_head = nn.Linear(9216, 200)
          
     def forward(self, x):
-        logits = self.AlexNet(x)
+        x = self.AlexNet(x)
+        logits = self.classification_head(x)
         return logits
