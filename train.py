@@ -1,4 +1,4 @@
-from models.TinyImgNetAlexNet import TinyImgNetAlexNet
+from models.TinyImgNetResNet import TinyImgNetResNet
 import torch
 from torch import nn
 import torchvision.transforms as transforms
@@ -13,7 +13,7 @@ def main():
     device = "cuda" if torch.cuda.is_available() else "cpu"
     
     learning_rates = [0.1, 0.001, 0.0001]
-    batch_sizes = [16, 32, 64]
+    batch_sizes = [64, 128, 256]
     num_epochs = 5
     
     tiny_imagenet_dataset_train = ImageFolder(root=train_path, transform=transform)
@@ -28,7 +28,7 @@ def main():
             wandb.init(
                 project="tiny-imagenet",
                 config={
-                    "model": "alexnet",
+                    "model": "resnet",
                     "learning_rate": lr,
                     "batch_size": batch_size,
                 }
@@ -37,7 +37,7 @@ def main():
             dataloader_val = DataLoader(dataset=tiny_imagenet_dataset_val, batch_size=batch_size, shuffle=False, num_workers=2, pin_memory=True)
 
             # Create the model
-            model = TinyImgNetAlexNet().to(device)
+            model = TinyImgNetResNet().to(device)
             print(model)
             
             loss_fn = nn.CrossEntropyLoss()
@@ -49,8 +49,8 @@ def main():
             
             test_loop(dataloader_val, model, loss_fn, device)
             
-            torch.save(model.state_dict(), f"checkpoints/TinyImgNetAlexNet_weights_{lr}_{batch_size}.pth")
-            wandb.save(f"checkpoints/TinyImgNetAlexNet_weights_{lr}_{batch_size}.pth")
+            torch.save(model.state_dict(), f"checkpoints/TinyImgNetResNet_weights_{lr}_{batch_size}.pth")
+            wandb.save(f"checkpoints/TinyImgNetResNet_weights_{lr}_{batch_size}.pth")
             
             wandb.finish()
     
