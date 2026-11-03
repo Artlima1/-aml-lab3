@@ -7,7 +7,7 @@ from torchvision.datasets import ImageFolder
 import wandb
 
 from utils.loops import train_loop, test_loop
-from utils.dataset import train_path, val_path, transform
+from utils.dataset import train_path, val_path, transform, prepare_val_folder
 
 def main():
     device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -26,10 +26,13 @@ def main():
         }
     )
     
+    prepare_val_folder()
     tiny_imagenet_dataset_train = ImageFolder(root=train_path, transform=transform)
     tiny_imagenet_dataset_val = ImageFolder(root=val_path, transform=transform)
-    dataloader_train = DataLoader(dataset=tiny_imagenet_dataset_train, batch_size=batch_size, shuffle=True)
-    dataloader_val = DataLoader(dataset=tiny_imagenet_dataset_val, batch_size=batch_size, shuffle=True)
+    assert tiny_imagenet_dataset_train.class_to_idx == tiny_imagenet_dataset_val.class_to_idx, \
+        "Train and val class mappings differ!"
+    dataloader_train = DataLoader(dataset=tiny_imagenet_dataset_train, batch_size=batch_size, shuffle=True, num_workers=2, pin_memory=True)
+    dataloader_val = DataLoader(dataset=tiny_imagenet_dataset_val, batch_size=batch_size, shuffle=False, num_workers=2, pin_memory=True)
 
     # Create the model
     model = TinyImgNetAlexNet().to(device)

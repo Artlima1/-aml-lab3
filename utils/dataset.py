@@ -1,3 +1,5 @@
+import os
+import shutil
 import requests
 from zipfile import ZipFile
 from io import BytesIO
@@ -21,7 +23,31 @@ def download_dataset():
         with ZipFile(BytesIO(response.content)) as zip_file:
             zip_file.extractall('/dataset')
         print('Download and extraction complete!')
-        
+
+
+def prepare_val_folder(val_dir=val_path):
+    """Reorganize Tiny ImageNet val/ into ImageFolder format: val/<wnid>/<img>.JPEG.
+
+    The original layout is val/images/*.JPEG + val_annotations.txt (one label per image).
+    Safe to call multiple times: does nothing if already reorganized.
+    """
+    images_dir = os.path.join(val_dir, 'images')
+    annotations_file = os.path.join(val_dir, 'val_annotations.txt')
+    if not os.path.isdir(images_dir):
+        return  # already reorganized
+
+    with open(annotations_file) as f:
+        for line in f:
+            img_name, wnid = line.split('\t')[:2]
+            class_dir = os.path.join(val_dir, wnid)
+            os.makedirs(class_dir, exist_ok=True)
+            src = os.path.join(images_dir, img_name)
+            if os.path.exists(src):
+                shutil.move(src, os.path.join(class_dir, img_name))
+
+    os.rmdir(images_dir)
+    print('Validation folder reorganized into class subfolders.')
+
     
 transform = transforms.Compose([
     transforms.Resize((224, 224)),  # Resize images to match AlexNet input
