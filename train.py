@@ -49,8 +49,8 @@ def main():
             
             test_loop(dataloader_val, model, loss_fn, device)
             
-            torch.save(model.state_dict(), "checkpoints/TinyImgNetAlexNet_weights.pth")
-            wandb.save("checkpoints/TinyImgNetAlexNet_weights.pth")
+            torch.save(model.state_dict(), f"checkpoints/TinyImgNetAlexNet_weights_{lr}_{batch_size}.pth")
+            wandb.save(f"checkpoints/TinyImgNetAlexNet_weights_{lr}_{batch_size}.pth")
             
             wandb.finish()
     

@@ -8,6 +8,7 @@ class TinyImgNetAlexNet(nn.Module):
         
         self.AlexNet = nn.Sequential(
             nn.Conv2d(3, 64, 11, 4, 2),     # conv1
+            nn.ReLU(inplace=True),
             nn.MaxPool2d(3, 2),             # pool1
             nn.Conv2d(64, 192, 5, 1, 2),    # conv2
             nn.ReLU(inplace=True),
@@ -21,10 +22,7 @@ class TinyImgNetAlexNet(nn.Module):
             nn.MaxPool2d(3, 2),             # pool5
             nn.Flatten()
         )
-        self.classification_head = nn.Sequential(
-            nn.Linear(9216, 200),
-            nn.ReLU(inplace=True),
-        )
+        self.classification_head = nn.Linear(9216, 200)
         
          
     def forward(self, x):
