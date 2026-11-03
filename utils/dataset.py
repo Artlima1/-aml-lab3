@@ -6,9 +6,10 @@ import torchvision.transforms as transforms
 
 dataset_downloaded_flag = False
 
-train_path, test_path = (
+train_path, val_path, test_path = (
     '/dataset/tiny-imagenet-200/train',
-    '/dataset/tiny-imagenet-200/test'
+    '/dataset/tiny-imagenet-200/val',
+    '/dataset/tiny-imagenet-200/test',
 )
 
 def download_dataset():
